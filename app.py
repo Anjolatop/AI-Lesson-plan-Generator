@@ -8,7 +8,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -48,13 +48,13 @@ def index():
         - Take-home assignment:Three models of this should be provided: one for the high- ability learner, another for the medium ability learner, another for the low ability learner
         """
 
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}]
         )
 
-        output = response["choices"][0]["message"]["content"]
-
+        output = response.choices[0].message.content
+        
     return render_template("index.html", output=output)
 
 if __name__ == "__main__":
