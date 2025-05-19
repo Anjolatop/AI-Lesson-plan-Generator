@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Lesson Plan Generator</title>
+</head>
+<body>
+    <h1>Lesson Plan Generator</h1>
+    <form method="POST">
+        <label>Grade:</label><br>
+        <input type="text" name="grade" required><br><br>
+
+        <label>Subject:</label><br>
+        <input type="text" name="subject" required><br><br>
+
+        <label>Exams to align with:</label><br>
+        <select name="exam" multiple size="4" required>
+            <option value="WAEC">WAEC</option>
+            <option value="NECO">NECO</option>
+            <option value="BECE">BECE</option>
+            <option value="Mock Exams">Mock Exams</option>
+        </select><br><br>
+
+        <label>Topics to be covered:</label><br>
+        <textarea name="topics" rows="4" cols="50" required></textarea><br><br>
+
+        <label>Learning Objectives:</label><br>
+        <textarea name="objectives" rows="4" cols="50" required></textarea><br><br>
+
+        <label>Instructional Materials:</label><br>
+        <textarea name="materials" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit">Generate Lesson Plan</button>
+    </form>
+
+    {% if output %}
+        <hr>
+        <h2>Generated Lesson Plan</h2>
+        <pre>{{ output }}</pre>
+    {% endif %}
+</body>
+</html>
