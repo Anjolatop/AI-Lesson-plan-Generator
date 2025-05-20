@@ -54,7 +54,7 @@ def index():
         )
 
         output = response.choices[0].message.content
-        
+
     return render_template("index.html", output=output)
 
 if __name__ == "__main__":
