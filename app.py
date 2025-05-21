@@ -1,17 +1,26 @@
 from flask import Flask, render_template, request
 from dotenv import load_dotenv
 import os
-from openai import OpenAI
+from azure.ai.inference import ChatCompletionsClient
+from azure.ai.inference.models import SystemMessage, UserMessage
+from azure.core.credentials import AzureKeyCredential
 
-# Load environment variables from .env
+# Load environment variables
 load_dotenv()
 
-# Set up Flask app
+# Flask setup
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
-# Set up OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Azure GPT-4.1 setup
+endpoint = "https://models.github.ai/inference"
+model = "openai/gpt-4.1"
+token = os.getenv("GITHUB_TOKEN")
+
+client = ChatCompletionsClient(
+    endpoint=endpoint,
+    credential=AzureKeyCredential(token)
+)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -26,7 +35,6 @@ def index():
         objectives = request.form.get("objectives", "")
         materials = request.form.get("materials", "")
 
-        # Prompt for GPT-4.1 (gpt-4o)
         prompt = f"""
         Create a detailed and structured lesson plan for a {grade} class on the subject: {subject}.
         Align the content with the exams: {exam_text}. I want the lesson plan to not sound like AI and to be 
@@ -54,14 +62,16 @@ def index():
         """
 
         try:
-            completion = client.chat.completions.create(
-                model="gpt-4o",  # GPT-4.1
+            response = client.complete(
                 messages=[
-                    {"role": "user", "content": prompt}
-                ]
+                    SystemMessage(""),
+                    UserMessage(prompt),
+                ],
+                temperature=1,
+                top_p=1,
+                model=model
             )
-
-            output = completion.choices[0].message.content
+            output = response.choices[0].message.content
 
         except Exception as e:
             output = f"An error occurred: {str(e)}"
