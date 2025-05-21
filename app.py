@@ -1,31 +1,36 @@
 from flask import Flask, render_template, request
-from openai import OpenAI
 from dotenv import load_dotenv
 import os
+from openai import OpenAI
 
+# Load environment variables from .env
 load_dotenv()
 
+# Set up Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Set up OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     output = None
+
     if request.method == "POST":
-        grade = request.form["grade"]
-        subject = request.form["subject"]
+        grade = request.form.get("grade", "")
+        subject = request.form.get("subject", "")
         exams = request.form.getlist("exam")
         exam_text = ", ".join(exams)
-        topics = request.form["topics"]
-        objectives = request.form["objectives"]
-        materials = request.form["materials"]
+        topics = request.form.get("topics", "")
+        objectives = request.form.get("objectives", "")
+        materials = request.form.get("materials", "")
 
+        # Prompt for GPT-4.1 (gpt-4o)
         prompt = f"""
         Create a detailed and structured lesson plan for a {grade} class on the subject: {subject}.
-        Align the content with the exams : {exam_text}. I want the lesson plan to not sound like ai and to be 
-        very encompassing. fel free to search 
+        Align the content with the exams: {exam_text}. I want the lesson plan to not sound like AI and to be 
+        very encompassing. Feel free to search.
 
         Topics to be covered:
         {topics}
@@ -38,22 +43,28 @@ def index():
 
         The lesson plan should include:
         - Lesson Objectives (rephrased and organized if needed)
-        - Prescribed learning outcomes (short-term learnign outcomes and long-term learnig outcomes)
-        - Before the lesson (things to prepare, should include instructional materials, maybe links to useful videos on Youtube, images, mind maps)
-        - Materials needed)
-        - Engage (Lesson Introduction: an interesting way to begin the lesson to grab learners attention)
-        - Explore: Main Content to be taught
-        - Closure: Closure for the lesson: short recap of important points or class exercise and in-class excercise modelling past questions from the exam type or types specified earlier
-        - Reflection: Three bullet points: What learner knew before, what learner knows after lesson, what learner should know
-        - Take-home assignment:Three models of this should be provided: one for the high- ability learner, another for the medium ability learner, another for the low ability learner
+        - Prescribed learning outcomes (short-term and long-term)
+        - Before the lesson (materials to prepare, including links to useful videos, images, or mind maps)
+        - Materials needed
+        - Engage (an engaging introduction)
+        - Explore (main lesson content)
+        - Closure (recap of key points or in-class activity based on exams)
+        - Reflection (3 bullets: what learner knew before, knows now, and should know)
+        - Take-home assignment (3 versions: high, medium, and low ability learners)
         """
 
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": prompt}]
-        )
+        try:
+            completion = client.chat.completions.create(
+                model="gpt-4o",  # GPT-4.1
+                messages=[
+                    {"role": "user", "content": prompt}
+                ]
+            )
 
-        output = response.choices[0].message.content
+            output = completion.choices[0].message.content
+
+        except Exception as e:
+            output = f"An error occurred: {str(e)}"
 
     return render_template("index.html", output=output)
 
