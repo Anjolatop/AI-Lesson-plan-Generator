@@ -38,7 +38,7 @@ def index():
         prompt = f"""
         Create a detailed and structured lesson plan for a {grade} class on the subject: {subject}.
         Align the content with the exams: {exam_text}. I want the lesson plan to not sound like AI and to be 
-        very encompassing. Feel free to search.
+        very encompassing. Feel free to search the web.
 
         Topics to be covered:
         {topics}
