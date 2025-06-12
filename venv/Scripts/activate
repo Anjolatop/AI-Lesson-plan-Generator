@@ -35,7 +35,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\anjol\AI Lesson plan Generator\venv"
+VIRTUAL_ENV="C:\Users\anjol\AI_Lesson_plan_Generator\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
