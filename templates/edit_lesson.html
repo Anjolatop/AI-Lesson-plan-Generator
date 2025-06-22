@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Lesson Plan - AI Lesson Plan Generator{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-title">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <h1 class="handwritten">
+                <i class="fas fa-edit"></i> Edit Lesson Plan
+            </h1>
+            <a href="{{ url_for('view_lesson', lesson_id=lesson_plan.id) }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Lesson
+            </a>
+        </div>
+        <p style="color: #666; margin-top: 1rem;">
+            Make any adjustments to your lesson plan below. You can modify any section to better fit your needs.
+        </p>
+    </div>
+</div>
+
+<div class="card">
+    <h2 class="card-title handwritten">
+        <i class="fas fa-pencil-alt"></i> Edit Your Lesson Plan
+    </h2>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="edited_plan" class="form-label">
+                <i class="fas fa-file-alt"></i> Lesson Plan Content
+            </label>
+            <textarea id="edited_plan" name="edited_plan" class="form-textarea" rows="30" required>{{ lesson_plan.generated_plan }}</textarea>
+            <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                <i class="fas fa-info-circle"></i> You can edit any part of the lesson plan. Use markdown formatting for better structure.
+            </div>
+        </div>
+        
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <a href="{{ url_for('view_lesson', lesson_id=lesson_plan.id) }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h2 class="card-title handwritten">
+        <i class="fas fa-lightbulb"></i> Editing Tips
+    </h2>
+    <div class="grid grid-3">
+        <div class="sketch-border">
+            <i class="fas fa-check-circle" style="font-size: 1.5rem; color: var(--success-color); margin-bottom: 0.5rem;"></i>
+            <h4 class="handwritten">Be Specific</h4>
+            <p>Add specific examples, activities, and resources that work for your classroom.</p>
+        </div>
+        
+        <div class="sketch-border">
+            <i class="fas fa-clock" style="font-size: 1.5rem; color: var(--accent-color); margin-bottom: 0.5rem;"></i>
+            <h4 class="handwritten">Timing</h4>
+            <p>Adjust timing for activities based on your students' needs and class schedule.</p>
+        </div>
+        
+        <div class="sketch-border">
+            <i class="fas fa-users" style="font-size: 1.5rem; color: var(--secondary-color); margin-bottom: 0.5rem;"></i>
+            <h4 class="handwritten">Personalize</h4>
+            <p>Make it your own by adding your teaching style and classroom-specific details.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('edited_plan');
+    
+    // Add character counter
+    const counter = document.createElement('div');
+    counter.style.fontSize = '0.8rem';
+    counter.style.color = '#666';
+    counter.style.textAlign = 'right';
+    counter.style.marginTop = '0.5rem';
+    textarea.parentNode.appendChild(counter);
+    
+    function updateCounter() {
+        counter.textContent = `${textarea.value.length} characters`;
+    }
+    
+    textarea.addEventListener('input', updateCounter);
+    updateCounter();
+    
+    // Auto-resize textarea
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Create Lesson Plan - AI Lesson Plan Generator{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-title text-center">
+        <i class="fas fa-magic" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 1rem;"></i>
+        <h1 class="handwritten">Create Your Lesson Plan</h1>
+        <p style="color: #666; margin-bottom: 2rem;">Fill in the details below and let AI create an amazing lesson plan for you</p>
+    </div>
+
+    <form method="POST" id="lessonForm">
+        <div class="grid grid-2">
+            <div class="form-group">
+                <label for="title" class="form-label">
+                    <i class="fas fa-heading"></i> Lesson Title
+                </label>
+                <input type="text" id="title" name="title" class="form-input" placeholder="e.g., Introduction to Photosynthesis" required>
+            </div>
+
+            <div class="form-group">
+                <label for="grade" class="form-label">
+                    <i class="fas fa-graduation-cap"></i> Grade Level
+                </label>
+                <select id="grade" name="grade" class="form-select" required>
+                    <option value="">Select Grade</option>
+                    <option value="Primary 1">Primary 1</option>
+                    <option value="Primary 2">Primary 2</option>
+                    <option value="Primary 3">Primary 3</option>
+                    <option value="Primary 4">Primary 4</option>
+                    <option value="Primary 5">Primary 5</option>
+                    <option value="Primary 6">Primary 6</option>
+                    <option value="JSS 1">JSS 1</option>
+                    <option value="JSS 2">JSS 2</option>
+                    <option value="JSS 3">JSS 3</option>
+                    <option value="SSS 1">SSS 1</option>
+                    <option value="SSS 2">SSS 2</option>
+                    <option value="SSS 3">SSS 3</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="subject" class="form-label">
+                <i class="fas fa-book-open"></i> Subject
+            </label>
+            <input type="text" id="subject" name="subject" class="form-input" placeholder="e.g., Biology, Mathematics, English Literature" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-target"></i> Exams to Align With
+            </label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" name="exam" value="WAEC" style="width: auto;">
+                    <i class="fas fa-check-circle"></i> WAEC
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" name="exam" value="NECO" style="width: auto;">
+                    <i class="fas fa-check-circle"></i> NECO
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" name="exam" value="BECE" style="width: auto;">
+                    <i class="fas fa-check-circle"></i> BECE
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" name="exam" value="Mock Exams" style="width: auto;">
+                    <i class="fas fa-check-circle"></i> Mock Exams
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="topics" class="form-label">
+                <i class="fas fa-list"></i> Topics to be Covered
+            </label>
+            <textarea id="topics" name="topics" class="form-textarea" rows="4" 
+                      placeholder="List the main topics and subtopics that will be covered in this lesson. Be as detailed as possible to help AI generate a comprehensive plan." required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="objectives" class="form-label">
+                <i class="fas fa-bullseye"></i> Learning Objectives
+            </label>
+            <textarea id="objectives" name="objectives" class="form-textarea" rows="4" 
+                      placeholder="What should students be able to do by the end of this lesson? List specific, measurable learning outcomes." required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="materials" class="form-label">
+                <i class="fas fa-tools"></i> Instructional Materials
+            </label>
+            <textarea id="materials" name="materials" class="form-textarea" rows="4" 
+                      placeholder="What materials, resources, or tools will be needed for this lesson? Include textbooks, digital resources, physical materials, etc." required></textarea>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2rem;">
+                <i class="fas fa-magic"></i> Generate Lesson Plan
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h2 class="card-title handwritten">
+        <i class="fas fa-lightbulb"></i> Tips for Better Lesson Plans
+    </h2>
+    <div class="grid grid-3">
+        <div class="sketch-border">
+            <i class="fas fa-pencil-alt" style="font-size: 1.5rem; color: var(--secondary-color); margin-bottom: 0.5rem;"></i>
+            <h4 class="handwritten">Be Specific</h4>
+            <p>Provide detailed topics and clear learning objectives for better results.</p>
+        </div>
+        
+        <div class="sketch-border">
+            <i class="fas fa-clock" style="font-size: 1.5rem; color: var(--accent-color); margin-bottom: 0.5rem;"></i>
+            <h4 class="handwritten">Consider Time</h4>
+            <p>Think about how long each activity should take when planning your lesson.</p>
+        </div>
+        
+        <div class="sketch-border">
+            <i class="fas fa-users" style="font-size: 1.5rem; color: var(--success-color); margin-bottom: 0.5rem;"></i>
+            <h4 class="handwritten">Student-Centered</h4>
+            <p>Focus on what students will do and learn, not just what you'll teach.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('lessonForm');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', function(e) {
+        // Check if at least one exam is selected
+        const examCheckboxes = form.querySelectorAll('input[name="exam"]:checked');
+        if (examCheckboxes.length === 0) {
+            e.preventDefault();
+            alert('Please select at least one exam to align with.');
+            return;
+        }
+        
+        // Show loading state
+        submitBtn.innerHTML = '<span class="loading"></span> Generating...';
+        submitBtn.disabled = true;
+    });
+    
+    // Add character counters
+    const textareas = form.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        const counter = document.createElement('div');
+        counter.style.fontSize = '0.8rem';
+        counter.style.color = '#666';
+        counter.style.textAlign = 'right';
+        counter.style.marginTop = '0.5rem';
+        textarea.parentNode.appendChild(counter);
+        
+        function updateCounter() {
+            counter.textContent = `${textarea.value.length} characters`;
+        }
+        
+        textarea.addEventListener('input', updateCounter);
+        updateCounter();
+    });
+});
+</script>
+{% endblock %} 

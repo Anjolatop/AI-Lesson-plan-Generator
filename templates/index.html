@@ -1,41 +1,74 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>AI Lesson Plan Generator</title>
-</head>
-<body>
-    <h1>Lesson Plan Generator</h1>
-    <form method="POST">
-        <label>Grade:</label><br>
-        <input type="text" name="grade" required><br><br>
+{% extends "base.html" %}
 
-        <label>Subject:</label><br>
-        <input type="text" name="subject" required><br><br>
+{% block title %}Welcome - AI Lesson Plan Generator{% endblock %}
 
-        <label>Exams to align with:</label><br>
-        <select name="exam" multiple size="4" required>
-            <option value="WAEC">WAEC</option>
-            <option value="NECO">NECO</option>
-            <option value="BECE">BECE</option>
-            <option value="Mock Exams">Mock Exams</option>
-        </select><br><br>
+{% block content %}
+<div class="card text-center">
+    <div class="card-title">
+        <i class="fas fa-magic" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 1rem;"></i>
+        <h1 class="handwritten" style="font-size: 2.5rem; margin-bottom: 1rem;">Welcome to LessonPlan AI</h1>
+    </div>
+    
+    <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #666;">
+        Transform your teaching with AI-powered lesson plans that are engaging, comprehensive, and perfectly aligned with your curriculum.
+    </p>
 
-        <label>Topics to be covered:</label><br>
-        <textarea name="topics" rows="4" cols="50" required></textarea><br><br>
+    <div class="grid grid-3" style="margin-bottom: 2rem;">
+        <div class="sketch-border">
+            <i class="fas fa-brain" style="font-size: 2rem; color: var(--secondary-color); margin-bottom: 1rem;"></i>
+            <h3 class="handwritten">Smart AI Generation</h3>
+            <p>Create detailed lesson plans using advanced AI that understands educational standards and best practices.</p>
+        </div>
+        
+        <div class="sketch-border">
+            <i class="fas fa-save" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
+            <h3 class="handwritten">Save & Organize</h3>
+            <p>Store all your lesson plans in one place, organized and easily accessible whenever you need them.</p>
+        </div>
+        
+        <div class="sketch-border">
+            <i class="fas fa-users" style="font-size: 2rem; color: var(--success-color); margin-bottom: 1rem;"></i>
+            <h3 class="handwritten">Teacher-Friendly</h3>
+            <p>Designed specifically for educators with an intuitive interface that makes lesson planning enjoyable.</p>
+        </div>
+    </div>
 
-        <label>Learning Objectives:</label><br>
-        <textarea name="objectives" rows="4" cols="50" required></textarea><br><br>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('register') }}" class="btn btn-primary">
+            <i class="fas fa-user-plus"></i> Get Started
+        </a>
+        <a href="{{ url_for('login') }}" class="btn btn-secondary">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+    </div>
+</div>
 
-        <label>Instructional Materials:</label><br>
-        <textarea name="materials" rows="4" cols="50" required></textarea><br><br>
-
-        <button type="submit">Generate Lesson Plan</button>
-    </form>
-
-    {% if output %}
-        <hr>
-        <h2>Generated Lesson Plan</h2>
-        <pre>{{ output }}</pre>
-    {% endif %}
-</body>
-</html>
+<div class="card">
+    <h2 class="card-title handwritten">How It Works</h2>
+    <div class="grid grid-2">
+        <div style="text-align: center;">
+            <div style="background: var(--secondary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold;">1</div>
+            <h3 class="handwritten">Sign Up</h3>
+            <p>Create your free account and start your journey to better lesson planning.</p>
+        </div>
+        
+        <div style="text-align: center;">
+            <div style="background: var(--accent-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold;">2</div>
+            <h3 class="handwritten">Input Details</h3>
+            <p>Provide your grade, subject, topics, and learning objectives.</p>
+        </div>
+        
+        <div style="text-align: center;">
+            <div style="background: var(--success-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold;">3</div>
+            <h3 class="handwritten">Generate Plan</h3>
+            <p>Our AI creates a comprehensive, engaging lesson plan tailored to your needs.</p>
+        </div>
+        
+        <div style="text-align: center;">
+            <div style="background: var(--primary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold;">4</div>
+            <h3 class="handwritten">Save & Use</h3>
+            <p>Save your lesson plans and access them anytime from your dashboard.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

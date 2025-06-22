@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lesson_plan.title }} - AI Lesson Plan Generator{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-title">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h1 class="handwritten">
+                    <i class="fas fa-book-open"></i> {{ lesson_plan.title }}
+                </h1>
+                <div style="display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                    <span class="sketch-border" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                        <i class="fas fa-graduation-cap"></i> {{ lesson_plan.grade }}
+                    </span>
+                    <span class="sketch-border" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                        <i class="fas fa-book"></i> {{ lesson_plan.subject }}
+                    </span>
+                    <span class="sketch-border" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                        <i class="fas fa-calendar-alt"></i> {{ lesson_plan.created_at.strftime('%B %d, %Y') }}
+                    </span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <a href="{{ url_for('edit_lesson', lesson_id=lesson_plan.id) }}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <button onclick="window.print()" class="btn btn-success">
+                    <i class="fas fa-print"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2 class="card-title handwritten">
+        <i class="fas fa-info-circle"></i> Lesson Details
+    </h2>
+    <div class="grid grid-2">
+        <div class="sketch-border">
+            <h4 class="handwritten"><i class="fas fa-list"></i> Topics Covered</h4>
+            <p>{{ lesson_plan.topics }}</p>
+        </div>
+        <div class="sketch-border">
+            <h4 class="handwritten"><i class="fas fa-bullseye"></i> Learning Objectives</h4>
+            <p>{{ lesson_plan.objectives }}</p>
+        </div>
+        <div class="sketch-border">
+            <h4 class="handwritten"><i class="fas fa-tools"></i> Instructional Materials</h4>
+            <p>{{ lesson_plan.materials }}</p>
+        </div>
+        <div class="sketch-border">
+            <h4 class="handwritten"><i class="fas fa-target"></i> Exam Alignment</h4>
+            <p>{{ lesson_plan.exams }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2 class="card-title handwritten">
+        <i class="fas fa-magic"></i> Generated Lesson Plan
+    </h2>
+    <div class="sketch-border" style="background: #fafafa; padding: 2rem;">
+        <div style="white-space: pre-wrap; font-family: 'Comic Neue', cursive; line-height: 1.8; font-size: 1.1rem;">
+{{ lesson_plan.generated_plan }}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2 class="card-title handwritten">
+        <i class="fas fa-thumbs-up"></i> Are You Satisfied?
+    </h2>
+    <p style="color: #666; margin-bottom: 2rem; text-align: center;">
+        Let us know if you're satisfied with this lesson plan. Your feedback helps us improve!
+    </p>
+    
+    <form method="POST" action="{{ url_for('feedback', lesson_id=lesson_plan.id) }}" style="text-align: center;">
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 1rem; border: 2px solid var(--success-color); border-radius: 10px; background: rgba(39, 174, 96, 0.1);">
+                <input type="radio" name="satisfaction" value="satisfied" style="width: auto;">
+                <i class="fas fa-thumbs-up" style="color: var(--success-color);"></i>
+                <span style="font-weight: 600; color: var(--success-color);">I'm Satisfied!</span>
+            </label>
+            
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 1rem; border: 2px solid var(--accent-color); border-radius: 10px; background: rgba(231, 76, 60, 0.1);">
+                <input type="radio" name="satisfaction" value="not_satisfied" style="width: auto;">
+                <i class="fas fa-thumbs-down" style="color: var(--accent-color);"></i>
+                <span style="font-weight: 600; color: var(--accent-color);">Needs Changes</span>
+            </label>
+        </div>
+        
+        <div class="form-group" style="max-width: 500px; margin: 0 auto;">
+            <label for="feedback_text" class="form-label">
+                <i class="fas fa-comment"></i> Additional Feedback (Optional)
+            </label>
+            <textarea id="feedback_text" name="feedback_text" class="form-textarea" rows="3" 
+                      placeholder="Tell us what you liked or what could be improved..."></textarea>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                <i class="fas fa-paper-plane"></i> Submit Feedback
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h2 class="card-title handwritten">
+        <i class="fas fa-lightbulb"></i> What's Next?
+    </h2>
+    <div class="grid grid-3">
+        <div class="sketch-border text-center">
+            <i class="fas fa-edit" style="font-size: 2rem; color: var(--secondary-color); margin-bottom: 1rem;"></i>
+            <h4 class="handwritten">Edit & Customize</h4>
+            <p>Make any adjustments to fit your specific classroom needs and teaching style.</p>
+        </div>
+        
+        <div class="sketch-border text-center">
+            <i class="fas fa-print" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
+            <h4 class="handwritten">Print & Use</h4>
+            <p>Print your lesson plan for classroom use or save it as a PDF.</p>
+        </div>
+        
+        <div class="sketch-border text-center">
+            <i class="fas fa-plus" style="font-size: 2rem; color: var(--success-color); margin-bottom: 1rem;"></i>
+            <h4 class="handwritten">Create More</h4>
+            <p>Generate more lesson plans for different subjects and topics.</p>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{{ url_for('create_lesson') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create Another Lesson Plan
+        </a>
+    </div>
+</div>
+
+<style>
+@media print {
+    .header, .btn, .card:last-child, .card:nth-last-child(2) {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+    }
+    
+    .sketch-border {
+        border: 1px solid #ccc !important;
+        background: white !important;
+    }
+    
+    body {
+        background: white !important;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const satisfactionRadios = document.querySelectorAll('input[name="satisfaction"]');
+    const submitBtn = document.querySelector('button[type="submit"]');
+    
+    satisfactionRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'satisfied') {
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Thank You!';
+                submitBtn.className = 'btn btn-success';
+            } else {
+                submitBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Lesson Plan';
+                submitBtn.className = 'btn btn-primary';
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 
